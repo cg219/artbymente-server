@@ -12,7 +12,7 @@ afterAll(() => {
 describe('Test All Posts', () => {
 
     beforeAll(async () => {
-        response = await request(app).get('/api/art');
+        response = await request(app).get('/api/artworks');
     })
 
     test('check if posts exists', () => {
