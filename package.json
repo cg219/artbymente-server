@@ -1,0 +1,35 @@
+{
+  "name": "artbymente-server",
+  "version": "1.0.0",
+  "description": "Server for artbymente",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --setupFiles dotenv/config",
+    "start": "node ./ index.js",
+    "dev": "nodemon -r dotenv/config ./index.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cg219/artbymente-server.git"
+  },
+  "author": "Clemente Gomez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cg219/artbymente-server/issues"
+  },
+  "homepage": "https://github.com/cg219/artbymente-server#readme",
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "jest": "^26.1.0",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "@koa/router": "^9.0.1",
+    "contentful": "^7.14.5",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-json": "^2.0.2"
+  }
+}
