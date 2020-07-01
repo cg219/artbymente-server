@@ -82,8 +82,9 @@ router.get("/api/artworks/:slug", async ctx => {
 
         const artwork = raw.items.map(art => transformResponse(art))[0];
         const related = await getRelated(artwork.tags);
+        artwork.related = related;
 
-        ctx.body = { status: 200, data: artwork, related }
+        ctx.body = { status: 200, data: artwork }
     } catch (error) {
         errorResponse(ctx, error);
     }
