@@ -13,11 +13,12 @@ const contentful = ContentfulAPI.createClient({
     space: credentials.CONTENTFUL_SPACE,
     accessToken: credentials.CONTENTFUL_ACCESS_TOKEN
 });
+const mailgun = require("mailgun-js")({
+    apiKey: credentials.MAILGUN_KEY,
+    domain: credentials.MAILGUN_DOMAIN
+});
 
-const errorResponse = (ctx, error) => {
-    ctx.body = { status: 400, error }
-}
-
+const errorResponse = (ctx, error) => ctx.body = { status: 400, message: error.message };
 const transformResponse = raw => {
     return {
         ...raw.fields,
@@ -85,6 +86,23 @@ router.get("/api/artworks/:slug", async ctx => {
         artwork.related = related;
 
         ctx.body = { status: 200, data: artwork }
+    } catch (error) {
+        errorResponse(ctx, error);
+    }
+})
+
+router.post("/api/newsletter", async ctx => {
+    try {
+        const { address, name } = ctx.request.body;
+
+        if (address && name) {
+            const data = { members: [{ address, name }], subscribed: true }
+
+            mailgun.lists(credentials.MAILGUN_LIST).members().add(data);
+            ctx.body = { status: 200 }
+        } else {
+            throw new Error("Invalid or Missing Values")
+        }
     } catch (error) {
         errorResponse(ctx, error);
     }
