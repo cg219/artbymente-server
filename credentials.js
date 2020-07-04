@@ -4,5 +4,6 @@ module.exports = {
     PORT: process.env.PORT || 3000,
     MAILGUN_KEY: process.env.MAILGUN_KEY,
     MAILGUN_DOMAIN: process.env.MAILGUN_DOMAIN,
-    MAILGUN_LIST: process.env.MAILGUN_LIST
+    MAILGUN_LIST: process.env.MAILGUN_LIST,
+    CONTACT_EMAIL: process.env.CONTACT_EMAIL
 }

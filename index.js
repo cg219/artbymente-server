@@ -108,6 +108,27 @@ router.post("/api/newsletter", async ctx => {
     }
 })
 
+router.post("/api/email", async ctx => {
+    try {
+        const { name, email, message } = ctx.request.body;
+        const data = {
+            from: `${name} <${email}>`,
+            to: credentials.CONTACT_EMAIL,
+            subject: "Message from Artbymente User",
+            text: message
+        }
+
+        if (name && email && message) {
+            mailgun.messages().send(data);
+            ctx.body = { status: 200 }
+        } else {
+            throw new Error("Invalid or Missing Values");
+        }
+    } catch (error) {
+        errorResponse(ctx, error);
+    }
+})
+
 app
     .use(KoaCORS())
     .use(KoaBody())
