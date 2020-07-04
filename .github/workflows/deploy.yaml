@@ -1,22 +1,17 @@
-name: Continuous Integration
+name: Deploy to App Engine
 
 on:
-  pull_request:
+  push:
     branches: [ master ]
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: Setup NodeJS
-        uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
-      - run: npm ci
-      - name: Test API
-        run: npm run test
+      - name: Update app.yaml
+        uses: ikuanyshbekov/app-yaml-env-compiler@v1.0
         env:
           CONTENTFUL_SPACE: ${{ secrets.CONTENTFUL_SPACE }}
           CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
@@ -24,3 +19,10 @@ jobs:
           MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
           MAILGUN_LIST: ${{ secrets.MAILGUN_LIST }}
           CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
+      - name: Deploy to App Engine
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          APPLICATION_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+        with:
+          args: app deploy app.yaml
